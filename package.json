@@ -1,0 +1,8 @@
+{
+  "name": "com.dom.instant-materials",
+  "displayName": "Instant Materials",
+  "description": "This utility provides instanced materials on-demand at runtime using unity's built-in shaders",
+  "version": "0.1.0",
+  "type": "tool",
+  "hideInEditor": false
+}
