@@ -23,7 +23,7 @@ namespace InstantMaterials
                 case HDRP_PIPELINE_NAME:
                     return RenderPipeline.HDRP;
                 default:
-                    Debug.LogWarning($"Render pipeline {pipelineType.Name} not supported. If this is custom, it is not currently compatible." +
+                    Debug.LogError($"Render pipeline {pipelineType.Name} not supported. If this is custom, it is not currently compatible." +
                         $"If this is a native Unity pipeline, please report this as a bug or missing feature.");
                     return RenderPipeline.Unknown;
             }

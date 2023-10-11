@@ -58,7 +58,10 @@ namespace InstantMaterials
 
         public override int GetHashCode()
         {
-            return Convert.ToInt32(gpuInstancing) * 1 + Convert.ToInt32(transparent) * 10 + Convert.ToInt32(lit) * 100 + ((int)hideFlags) * 1000;
+            return (gpuInstancing ? 1 : 0)
+                | (transparent ? 1 << 1 : 0)
+                | (lit ? 1 << 2 : 0)
+                | (hideFlags.GetHashCode() << 3);
         }
     }
 }
