@@ -1,12 +1,10 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace InstantMaterials
 {
-    internal static class RenderPipelineInformation
+    public static class RenderPipelineInformation
     {
-        static readonly ShaderData defaultShaderData = new ShaderData(
+        static readonly ShaderData DefaultShaderData = new ShaderData(
                litName: "Standard",
                unlitName: "Unlit/Color",
                unlitTransparentName: "Unlit/Transparent",
@@ -14,10 +12,10 @@ namespace InstantMaterials
                unlitColorID: "_Color",
                textureID: "_MainTex");
 
-        internal static readonly Dictionary<RenderPipeline, ShaderData> shaderData = new Dictionary<RenderPipeline, ShaderData>()
+        public static readonly IReadOnlyDictionary<RenderPipeline, ShaderData> ShaderData = new Dictionary<RenderPipeline, ShaderData>()
         {
-            { RenderPipeline.Default, defaultShaderData },
-            { RenderPipeline.Unknown, defaultShaderData },
+            { RenderPipeline.Default, DefaultShaderData },
+            { RenderPipeline.Unknown, DefaultShaderData },
             { RenderPipeline.URP, new ShaderData(
                 colorID:                "_BaseColor",
                 unlitColorID:           "_BaseColor",
@@ -38,13 +36,13 @@ namespace InstantMaterials
 
         internal static string GetShaderName(MaterialConfig matType, RenderPipeline pipeline)
         {
-            if (matType.lit)
+            if (matType.Lit)
             {
-                return shaderData[pipeline].litShader;
+                return ShaderData[pipeline].LitShader;
             }
             else
             {
-                return matType.transparent ? shaderData[pipeline].unlitTransparencyShader : shaderData[pipeline].unlitShader;
+                return matType.Transparent ? ShaderData[pipeline].UnlitTransparencyShader : ShaderData[pipeline].UnlitShader;
             }
         }
 

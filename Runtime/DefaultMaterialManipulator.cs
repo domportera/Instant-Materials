@@ -67,19 +67,19 @@ namespace InstantMaterials
 
         internal static void SetColor(Material mat, Color color, RuntimeMaterialData data)
         {
-            if (data.isTransparentUnlitDefault)
+            if (data.IsTransparentUnlitDefault)
             {
                 ApplyColorTransparentUnlitDefaultMaterial(mat, color, data);
                 return;
             }
 
-            int colorID = data.colorID;
+            int colorID = data.ColorID;
             mat.SetColor(colorID, color);
         }
 
         private static void ApplyColorTransparentUnlitDefaultMaterial(Material material, Color color, RuntimeMaterialData materialData)
         {
-            Texture2D texture = (Texture2D)material.GetTexture(materialData.textureID);
+            Texture2D texture = (Texture2D)material.GetTexture(materialData.TextureID);
 
             if (texture == null)
             {
@@ -103,13 +103,13 @@ namespace InstantMaterials
         private static Texture2D CreateAndApplyTexture(Material material, RuntimeMaterialData materialData, int xResolution, int yResolution)
         {
             Texture2D texture = new Texture2D(xResolution, yResolution);
-            material.SetTexture(materialData.textureID, texture);
+            material.SetTexture(materialData.TextureID, texture);
             return texture;
         }
 
         internal static void SetTexture(Material material, Texture2D texture, RuntimeMaterialData materialData)
         {
-            material.SetTexture(materialData.textureID, texture);
+            material.SetTexture(materialData.TextureID, texture);
         }
     }
 }

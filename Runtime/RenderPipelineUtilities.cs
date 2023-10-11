@@ -11,10 +11,12 @@ namespace InstantMaterials
 
         public static RenderPipeline GetCurrentPipeline()
         {
-            Type pipelineType = GraphicsSettings.renderPipelineAsset?.GetType();
+            var pipelineAsset = GraphicsSettings.renderPipelineAsset;
 
-            if (pipelineType == null)
+            if (pipelineAsset == null)
                 return RenderPipeline.Default;
+            
+            Type pipelineType = pipelineAsset.GetType();
 
             switch (pipelineType.Name)
             {

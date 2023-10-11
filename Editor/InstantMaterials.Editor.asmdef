@@ -1,0 +1,16 @@
+{
+    "name": "InstantMaterials.Editor",
+    "rootNamespace": "",
+    "references": [
+        "com.dom.instant-materials"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -5,20 +5,20 @@ namespace InstantMaterials
 {
     public static class MaterialInstancer
     {
-        static RenderPipeline pipeline;
+        static RenderPipeline _pipeline;
         static RenderPipeline Pipeline {
             get {
-                if (detectedPipeline)
-                    return pipeline;
+                if (_detectedPipeline)
+                    return _pipeline;
 
-                pipeline = RenderPipelineUtilities.GetCurrentPipeline();
-                detectedPipeline = true;
-                return pipeline;
+                _pipeline = RenderPipelineUtilities.GetCurrentPipeline();
+                _detectedPipeline = true;
+                return _pipeline;
             }
         }
-        static bool detectedPipeline = false;
+        static bool _detectedPipeline = false;
 
-        static bool cacheBlankMaterials = true;
+        static bool _cacheBlankMaterials = true;
 
         /// <summary>
         /// Use this to disable caching separate "blank" (fresh out the oven) materials. I recommend you keep this set to true.
@@ -26,17 +26,17 @@ namespace InstantMaterials
         /// materials being instantiated with unwanted textures and colors.
         /// </summary>
         public static bool CacheBlankMaterials {
-            get { return cacheBlankMaterials; }
+            get { return _cacheBlankMaterials; }
             set {
-                cacheBlankMaterials = value;
+                _cacheBlankMaterials = value;
 
                 if (value == false)
                     WipeMaterialTemplates();
             }
         }
 
-        static Dictionary<MaterialConfig, Material> materialTemplates = new Dictionary<MaterialConfig, Material>();
-        static Dictionary<Material, RuntimeMaterialData> instantiatedMaterialData = new Dictionary<Material, RuntimeMaterialData>();
+        static readonly Dictionary<MaterialConfig, Material> MaterialTemplates = new Dictionary<MaterialConfig, Material>();
+        static readonly Dictionary<Material, RuntimeMaterialData> InstantiatedMaterialData = new Dictionary<Material, RuntimeMaterialData>();
 
         /// <summary>
         /// Get a new default material with specified parameters. Lit and transparent with gpu instancing disabled by default.
@@ -53,7 +53,7 @@ namespace InstantMaterials
 
             Material newMaterial = Object.Instantiate(material);
             RuntimeMaterialData data = new RuntimeMaterialData(materialConfig, Pipeline);
-            instantiatedMaterialData.Add(newMaterial, data);
+            InstantiatedMaterialData.Add(newMaterial, data);
             newMaterial.hideFlags = hideFlags;
 
             return newMaterial;
@@ -67,7 +67,7 @@ namespace InstantMaterials
         /// <param name="color">Desired color</param>
         public static void SetColor(Material material, Color color)
         {
-            RuntimeMaterialData matInfo = instantiatedMaterialData[material];
+            RuntimeMaterialData matInfo = InstantiatedMaterialData[material];
             DefaultMaterialManipulator.SetColor(material, color, matInfo);
         }
 
@@ -79,7 +79,7 @@ namespace InstantMaterials
         /// <param name="color">Desired color</param>
         public static void SetTexture(Material material, Texture2D texture)
         {
-            RuntimeMaterialData matInfo = instantiatedMaterialData[material];
+            RuntimeMaterialData matInfo = InstantiatedMaterialData[material];
             DefaultMaterialManipulator.SetTexture(material, texture, matInfo);
         }
 
@@ -90,7 +90,7 @@ namespace InstantMaterials
         /// <returns>Color id for use with a shader</returns>
         public static int GetColorID(Material material)
         {
-            return instantiatedMaterialData[material].colorID;
+            return InstantiatedMaterialData[material].ColorID;
         }
 
         /// <summary>
@@ -100,7 +100,7 @@ namespace InstantMaterials
         /// <returns>Texture id for use with a shader</returns>
         public static int GetTextureID(Material material)
         {
-            return instantiatedMaterialData[material].textureID;
+            return InstantiatedMaterialData[material].TextureID;
         }
 
         /// <summary>
@@ -110,20 +110,20 @@ namespace InstantMaterials
         /// </summary>
         public static void WipeMaterialTemplates()
         {
-            IEnumerable<Material> materials = materialTemplates.Values;
+            IEnumerable<Material> materials = MaterialTemplates.Values;
 
             foreach(Material mat in materials)
             {
                 GameObject.Destroy(mat);
             }
 
-            materialTemplates.Clear();
+            MaterialTemplates.Clear();
         }
 
         private static Material GetMaterialTemplate(MaterialConfig matConfig)
         {
             Material material;
-            bool success = materialTemplates.TryGetValue(matConfig, out material);
+            bool success = MaterialTemplates.TryGetValue(matConfig, out material);
 
             if (success)
                 return material;
@@ -131,14 +131,21 @@ namespace InstantMaterials
             string shaderName = RenderPipelineInformation.GetShaderName(matConfig, Pipeline);
 
             Shader shader = Shader.Find(shaderName);
+
+            if (shader == null)
+            {
+                Debug.LogError($"Instant Materials: Could not find shader {shaderName} for pipeline {Pipeline}");
+                return null;
+            }
+            
             material = new Material(shader);
 
-            if (matConfig.transparent)
+            if (matConfig.Transparent)
             {
                 DefaultMaterialManipulator.SetDefaultShaderMaterialTransparent(material, Pipeline);
             }
 
-            material.enableInstancing = matConfig.gpuInstancing;
+            material.enableInstancing = matConfig.GPUInstancing;
 
             CacheMaterial(matConfig, material);
 
@@ -147,13 +154,13 @@ namespace InstantMaterials
 
         private static void CacheMaterial(MaterialConfig materialConfig, Material material)
         {
-            if (cacheBlankMaterials)
+            if (_cacheBlankMaterials)
             {
-                materialTemplates[materialConfig] = Object.Instantiate(material);
+                MaterialTemplates[materialConfig] = Object.Instantiate(material);
             }
             else
             {
-                materialTemplates[materialConfig] = material;
+                MaterialTemplates[materialConfig] = material;
             }
         }
     }
