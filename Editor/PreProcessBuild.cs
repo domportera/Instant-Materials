@@ -57,13 +57,15 @@ namespace InstantMaterials.Editor
             
             // add the shader to the array
             int arrayIndex = alwaysIncludedShaders.arraySize;
-            alwaysIncludedShaders.InsertArrayElementAtIndex(arrayIndex);
-            var arrayElem = alwaysIncludedShaders.GetArrayElementAtIndex(arrayIndex);
-            arrayElem.objectReferenceValue = shader;
+            //alwaysIncludedShaders.InsertArrayElementAtIndex(arrayIndex);
+            //var arrayElem = alwaysIncludedShaders.GetArrayElementAtIndex(arrayIndex);
+            //arrayElem.objectReferenceValue = shader;
             
-            alwaysIncludedShaders.serializedObject.ApplyModifiedProperties();
+            //alwaysIncludedShaders.serializedObject.ApplyModifiedProperties();
+            
+            Debug.Log($"Instant Materials: Added shader {shaderName} to Always Included Shaders. New total count: {alwaysIncludedShaders.arraySize}");
 
-            AssetDatabase.SaveAssets();
+            //AssetDatabase.SaveAssets();
         }
     }
 }
