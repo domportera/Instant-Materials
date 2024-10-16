@@ -1,9 +1,7 @@
 {
-    "name": "InstantMaterials.Editor",
-    "rootNamespace": "",
-    "references": [
-        "GUID:3c8c7a9d13eaa1547acf1aed5fd90514"
-    ],
+    "name": "InstantMaterials.Runtime",
+    "rootNamespace": "InstantMaterials",
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

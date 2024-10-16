@@ -24,8 +24,6 @@ namespace InstantMaterials
         {
             StartCoroutine(SpawnObjects());
             StartCoroutine(LineRenderer());
-
-            Debug.Log($"Your current render pipeline is {RenderPipelineUtilities.GetCurrentPipeline()}");
         }
 
         IEnumerator SpawnObjects()
@@ -45,8 +43,7 @@ namespace InstantMaterials
                 bool lit = i % 2 == 0;
                 bool transparent = i % 10 < 6;
 
-                //check this function for overloads!
-                rend.material = MaterialInstancer.GetNewMaterialInstance(lit, transparent);
+                rend.material = MaterialInstancer.ApplyMaterialTo(rend, Color.clear);
 
                 obj.name = $"{primType} {(transparent ? "Transparent" : "Opaque")} {(lit ? "Lit" : "Unlit")}";
                 obj.AddComponent<DemoObject>();
@@ -60,10 +57,7 @@ namespace InstantMaterials
         IEnumerator LineRenderer()
         {
             LineRenderer line = gameObject.AddComponent<LineRenderer>();
-            Material material = MaterialInstancer.GetNewMaterialInstance(true, true);
-            line.material = material;
-
-            MaterialInstancer.SetColor(material, new Color(0.6f, 0f, 0.9f, 0.38f));
+            _ = MaterialInstancer.ApplyMaterialTo(line, new Color(0.6f, 0f, 0.9f, 0.38f));
 
             line.startWidth = 0.1f;
             line.endWidth = 0.1f;

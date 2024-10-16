@@ -39,7 +39,6 @@ namespace InstantMaterials
                 return;
 
             Color newColor = GetNewColor(oscillator);
-            MaterialInstancer.SetColor(material, newColor);
         }
 
         private Color GetNewColor(float oscillator)

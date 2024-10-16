@@ -23,7 +23,7 @@ namespace InstantMaterials.Editor
                 var serializedObject = new SerializedObject(graphicsSettingsObj);
                 var alwaysIncludedShadersProperty = serializedObject.FindProperty("m_AlwaysIncludedShaders");
 
-                AddAlwaysIncludedShader(MaterialInstancer.ShaderName, alwaysIncludedShadersProperty);
+                AddAlwaysIncludedShader("Instant/BasicUnlit", alwaysIncludedShadersProperty);
             }
             catch (Exception e)
             {

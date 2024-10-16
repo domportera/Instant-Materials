@@ -1,7 +1,10 @@
 {
-    "name": "com.dom.instant-materials",
-    "rootNamespace": "InstantMaterials",
-    "references": [],
+    "name": "InstantMaterials.Editor",
+    "rootNamespace": "",
+    "references": [
+        "com.dom.instant-materials",
+        "UnityEditor.UI"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
